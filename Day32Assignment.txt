@@ -1,0 +1,82 @@
+ER-Diagram Assignment (DAY-32)
+
+mysql> alter table employee_payroll add phoneNumber varchar(255) not null after name;
+Query OK, 0 rows affected (3.10 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table employee_payroll add address varchar(255) not null after phoneNumber;
+Query OK, 0 rows affected (2.44 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table employee_payroll add department varchar(255) not null after address;
+Query OK, 0 rows affected (1.97 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc employee_payroll;
++-------------+--------------+------+-----+---------+----------------+
+| Field       | Type         | Null | Key | Default | Extra          |
++-------------+--------------+------+-----+---------+----------------+
+| id          | int          | NO   | PRI | NULL    | auto_increment |
+| name        | varchar(150) | NO   |     | NULL    |                |
+| phoneNumber | varchar(255) | NO   |     | NULL    |                |
+| address     | varchar(255) | NO   |     | NULL    |                |
+| department  | varchar(255) | NO   |     | NULL    |                |
+| gender      | char(1)      | YES  |     | NULL    |                |
+| salary      | double       | NO   |     | NULL    |                |
+| start       | date         | NO   |     | NULL    |                |
++-------------+--------------+------+-----+---------+----------------+
+8 rows in set (0.28 sec)
+
+mysql> alter table employee_payroll change salary  basicPay double not null;
+Query OK, 0 rows affected (0.76 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table employee_payroll add deduction double after basicPay;
+Query OK, 0 rows affected (3.31 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table employee_payroll add taxablePay double after deduction;
+Query OK, 0 rows affected (2.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table employee_payroll add tax double after taxablePay;
+Query OK, 0 rows affected (2.31 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table employee_payroll add netPay double after tax;
+Query OK, 0 rows affected (4.30 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from employee_payroll;
++----+---------+-------------+---------+------------+--------+----------+-----------+------------+------+--------+------------+
+| id | name    | phoneNumber | address | department | gender | basicPay | deduction | taxablePay | tax  | netPay | start      |
++----+---------+-------------+---------+------------+--------+----------+-----------+------------+------+--------+------------+
+|  1 | Bil     |             |         |            | M      |   100000 |      NULL |       NULL | NULL |   NULL | 2018-01-03 |
+|  2 | Mark    |             |         |            | M      |  2000000 |      NULL |       NULL | NULL |   NULL | 2019-11-13 |
+|  3 | Charlie |             |         |            | M      |  3000000 |      NULL |       NULL | NULL |   NULL | 2020-05-21 |
+|  4 | sherlyn |             |         |            | F      |   150000 |      NULL |       NULL | NULL |   NULL | 2021-06-16 |
+|  5 | florina |             |         |            | F      |   250000 |      NULL |       NULL | NULL |   NULL | 2021-06-16 |
++----+---------+-------------+---------+------------+--------+----------+-----------+------------+------+--------+------------+
+5 rows in set (0.00 sec)
+
+mysql> insert into employee_payroll (name, phoneNumber,address,department,gender,basicPay,deduction,taxablePay,tax,netPay,start) values
+    -> ('Riya','8375795473','Mumbai','Marketing','F',20000,2000,18000,1000,17000,'2021-05-01'),
+    -> ('Raj','9012345678','Pune','Hr','M',30000,2000,15000,1000,26000,'2020-06-06'),
+    -> ('Riya','8398724378','Mumbai','Sales','F',40000,2000,18000,2000,37000,'2021-05-01');
+Query OK, 3 rows affected (0.11 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select * from employee_payroll;
++----+---------+-------------+---------+------------+--------+----------+-----------+------------+------+--------+------------+
+| id | name    | phoneNumber | address | department | gender | basicPay | deduction | taxablePay | tax  | netPay | start      |
++----+---------+-------------+---------+------------+--------+----------+-----------+------------+------+--------+------------+
+|  1 | Bil     |             |         |            | M      |   100000 |      NULL |       NULL | NULL |   NULL | 2018-01-03 |
+|  2 | Mark    |             |         |            | M      |  2000000 |      NULL |       NULL | NULL |   NULL | 2019-11-13 |
+|  3 | Charlie |             |         |            | M      |  3000000 |      NULL |       NULL | NULL |   NULL | 2020-05-21 |
+|  4 | sherlyn |             |         |            | F      |   150000 |      NULL |       NULL | NULL |   NULL | 2021-06-16 |
+|  5 | florina |             |         |            | F      |   250000 |      NULL |       NULL | NULL |   NULL | 2021-06-16 |
+|  6 | Riya    | 8375795473  | Mumbai  | Marketing  | F      |    20000 |      2000 |      18000 | 1000 |  17000 | 2021-05-01 |
+|  7 | Raj     | 9012345678  | Pune    | Hr         | M      |    30000 |      2000 |      15000 | 1000 |  26000 | 2020-06-06 |
+|  8 | Riya    | 8398724378  | Mumbai  | Sales      | F      |    40000 |      2000 |      18000 | 2000 |  37000 | 2021-05-01 |
++----+---------+-------------+---------+------------+--------+----------+-----------+------------+------+--------+------------+
+8 rows in set (0.13 sec)
